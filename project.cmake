@@ -1,3 +1,5 @@
+set(CMAKE_NO_SYSTEM_FROM_IMPORTED ON)
+
 add_subdirectory(main)
 
 target_link_libraries(${PROJECT_NAME} main)
