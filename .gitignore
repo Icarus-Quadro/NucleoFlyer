@@ -8,3 +8,4 @@ mbed_settings.py
 mbed-os.lib
 BUILD/
 mbed_settings.pyc
+.vscode

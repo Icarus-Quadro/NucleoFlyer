@@ -9,6 +9,7 @@ add_subdirectory(Icarus)
 
 add_library(main
     main.cpp
+    MPU9255.cpp
 )
 
 target_link_libraries(main Icarus)
