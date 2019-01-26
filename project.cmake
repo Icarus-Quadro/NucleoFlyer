@@ -1,5 +1,7 @@
 set(CMAKE_NO_SYSTEM_FROM_IMPORTED ON)
 
+add_compile_options("-fexceptions" "-Os")
+
 add_subdirectory(main)
 
 target_link_libraries(${PROJECT_NAME} main)
