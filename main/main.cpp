@@ -1,4 +1,5 @@
 #include "I2CBus.hpp"
+#include "MbedWait.hpp"
 
 #include <icarus/I2CRegisterBank.hpp>
 #include <icarus/MPU9255.hpp>
@@ -13,25 +14,31 @@
 #include <DigitalOut.h>
 #include <Thread.h>
 
-
-DigitalOut led1(LED1);
+DigitalOut led1(LED2);
+DigitalOut led2(LED3);
 
 extern "C" int main();
 
 int main()
 {
+    led2 = 1;
     I2CBus i2c(PB_9, PB_8);
-    
     auto mpu9255Device = icarus::I2CRegisterBank(&i2c, 104);
     auto mpu9255 = icarus::MPU9255(&mpu9255Device);
-    mpu9255.initialize();
-    mpu9255.i2cBypass(true);
-
     auto ak8963Device = icarus::I2CRegisterBank(&i2c, 12);
-    auto ak8963 = icarus::AK8963(&ak8963Device);
-    ak8963.initialize();
+    auto ak8963 = icarus::AK8963<MbedWait, decltype(ak8963Device)>(&ak8963Device);
+    wait_ms(1000);
+    while (true) {
+        try {
+            mpu9255.initialize();
+            mpu9255.i2cBypass(true);
+            break;
+            // ak8963.initialize();
+        } catch (std::runtime_error const & error){
+            printf("\n\r%s", error.what());
+        }
+    }
     
-
     icarus::ElectricMotor motors[4];
 
     auto pid = icarus::PIDController(motors, 4);
@@ -50,21 +57,25 @@ int main()
     constexpr auto frequency = 100;
 
     while (true) {
-        mpu9255.read();
-        ak8963.read();
-        readings.push_back(mpu9255.acceleration());
-        readings.push_back(mpu9255.angularVelocity());
-        readings.push_back(ak8963.magneticField());
-
+        try {
+            mpu9255.read();
+            // ak8963.read();
+        } catch (std::runtime_error const & error) {
+            printf("\n\r%s", error.what());
+        }
+        
         filter.integrateReadings(readings.data(), readings.size(), 1.0 / frequency);
         readings.clear();
 
         quadro.fly();
 
-        auto mag = ak8963.magneticField().magneticField * 1000000;
-        printf("%fuT %fuT %fuT\n\r", mag[0], mag[1], mag[2]);
+        Eigen::Matrix<float, 3, 1> mag = ak8963.mScale * 1000000;
+        printf("$");
+
+        // printf("%fuT %fuT %fuT\n\r", mag[0], mag[1], mag[2]);
 
         led1 = !led1;
+        led2 = !led2;
         
         timeToSleep += 1000 / frequency;
         ThisThread::sleep_until(timeToSleep);

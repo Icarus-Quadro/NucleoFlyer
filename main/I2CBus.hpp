@@ -1,19 +1,28 @@
 #pragma once
 
-#include <mbed.h>
-#include <I2C.h>
+#include <drivers/I2C.h>
+#include <stdexcept>
+#include "MbedWait.hpp"
 
 struct I2CBus
 {
     explicit I2CBus(PinName sda, PinName scl) :
         mDriver(sda, scl)
-    {}
+    {
+        mDriver.frequency(400000);
+    }
     
     void transfer(uint8_t deviceAddress, std::byte const * writeBuffer, size_t writeSize, std::byte * readBuffer, size_t readSize)
     {
-        mDriver.write(deviceAddress << 1, reinterpret_cast<char const *>(writeBuffer), writeSize, true); 
-        mDriver.read(deviceAddress << 1, reinterpret_cast<char *>(readBuffer), readSize);
+        MbedWait::microseconds(1000);
+        if (mDriver.write(deviceAddress << 1, reinterpret_cast<char const *>(writeBuffer), writeSize) != 0) {
+            throw std::runtime_error("I2C write failed.");
+        } 
+        MbedWait::microseconds(1000);
+        if (mDriver.read(deviceAddress << 1, reinterpret_cast<char *>(readBuffer), readSize) != 0) {
+            throw std::runtime_error("I2C read failed.");
+        }
     }
 private:
-    I2C mDriver;
+    mbed::I2C mDriver;
 }; 
