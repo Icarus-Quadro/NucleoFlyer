@@ -6,11 +6,12 @@ Nucleo based quadcopter flight controller.
 
 Install mbed-cli and gcc-arm-none-eabi. gcc needs to be in PATH.
 ```
+git submodule update --init
 mbed new .
 mbed export -i cmake_gcc_arm
 mkdir build
 cd build
-cmake ..
+cmake .. -DBOOST_ROOT=path_to/boost_version
 make
 ```
 
