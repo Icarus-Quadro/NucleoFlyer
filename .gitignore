@@ -50,3 +50,22 @@ CTestTestfile.cmake
 _deps
 
 ## CMake ##
+
+## mbed ##
+
+/BUILD
+/CMakeLists.txt
+/GettingStarted.html
+/mbed_config.h
+/mbed_settings.py
+/mbed_settings.pyc
+/mbed-os.lib
+/.mbed
+
+## mbed ##
+
+## misc ##
+
+/build
+
+## misc ##
