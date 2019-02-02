@@ -1,11 +1,52 @@
-/CMakeLists.txt
-/GettingStarted.html
-/mbed_config.h
-/mbed-os
-/.mbed
-/build
-mbed_settings.py
-mbed-os.lib
-BUILD/
-mbed_settings.pyc
-.vscode
+## C++ ##
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+## C++ ##
+
+## CMake ##
+
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+## CMake ##
