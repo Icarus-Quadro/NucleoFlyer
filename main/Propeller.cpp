@@ -4,8 +4,8 @@
 
 namespace {
 
-constexpr auto kMinPulseWidth = 0.001f;
-constexpr auto kMaxPulseWidth = 0.002f;
+constexpr auto kMinPulseWidth = 1.f;
+constexpr auto kMaxPulseWidth = 2.f;
 constexpr auto kFrequency = 450.f;
 constexpr auto kMillisInSecond = 1000.f;
 
