@@ -12,6 +12,8 @@ add_library(main
     MPU9255.cpp
     AK8963.cpp
     BMP180.cpp
+    SRF05.cpp
+    Propeller.cpp
 )
 
 target_link_libraries(main PRIVATE Icarus)
